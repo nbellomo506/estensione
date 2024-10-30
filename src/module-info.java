@@ -1,6 +1,6 @@
 module estensione {
 	requires javafx.controls;
-	requires javafx.fxml;
+	requires javafx.fxmll;
 	
 	opens application to javafx.graphics, javafx.fxml;
 }
