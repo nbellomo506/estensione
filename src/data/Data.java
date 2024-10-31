@@ -7,8 +7,6 @@ import java.util.List;
 
 import database.*;
 
-import data.NoDataException;
-
 public class Data {
    
 	private List<Example> data = new ArrayList<>(); // rappresenta il dataset

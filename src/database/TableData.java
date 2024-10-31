@@ -35,8 +35,7 @@ class TableData {
 			
 			conn = db.getConnection();
 			Statement st = conn.createStatement();
-			ResultSet rs = st.executeQuery("SELECT * FROM" + table +" WHERE 1;");
-			
+			st.executeQuery("SELECT * FROM" + table +" WHERE 1;");
 			
 			db.closeConnection();
 		} catch (DatabaseConnectionException e) {

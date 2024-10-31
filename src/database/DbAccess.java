@@ -4,8 +4,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import javax.management.InstanceNotFoundException;
-
 /**
  * Gestisce l'accesso al DB per  la lettura dei dati di training
  * @author Map Tutor

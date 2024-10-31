@@ -6,15 +6,17 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #051650;" stylesheets="@application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #051650;" stylesheets="@application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.HomeController">
    <children>
-      <Text fill="WHITE" layoutX="254.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Menu" textAlignment="CENTER">
+      <Text fill="WHITE" layoutX="232.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Connessione" textAlignment="CENTER">
          <font>
             <Font size="24.0" />
          </font>
       </Text>
-      <TextField layoutX="211.0" layoutY="160.0" text="exampleTab" />
-      <Text fill="WHITE" layoutX="212.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nome tabella" wrappingWidth="83.47003173828125" />
-      <Button layoutX="313.0" layoutY="195.0" mnemonicParsing="false" text="Cerca" />
+      <TextField fx:id="hostNameInput" layoutX="225.0" layoutY="134.0" text="localhost" />
+      <Text fill="WHITE" layoutX="226.0" layoutY="123.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nome host:" wrappingWidth="83.47003173828125" />
+      <Button fx:id="connetti" layoutX="327.0" layoutY="254.0" mnemonicParsing="false" onAction="#connetti" text="Cerca" />
+      <TextField fx:id="portInput" layoutX="225.0" layoutY="199.0" text="8000" />
+      <Text fill="WHITE" layoutX="226.0" layoutY="188.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Porta:" wrappingWidth="83.47003173828125" />
    </children>
 </AnchorPane>
