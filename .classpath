@@ -11,46 +11,50 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/nbell/Downloads/javafx-sdk-23.0.1/lib/javafx.base.jar">
+	<classpathentry kind="lib" path="C:/Users/cocoz/Downloads/Slides PROGETTO/Slides PROGETTO/LAB 4/mysql-connector-java-8.0.17.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/nbell/Downloads/javafx-sdk-23.0.1/lib/javafx.controls.jar">
+	<classpathentry kind="lib" path="C:/Users/cocoz/Downloads/lib/javafx.base.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/nbell/Downloads/javafx-sdk-23.0.1/lib/javafx.fxml.jar">
+	<classpathentry kind="lib" path="C:/Users/cocoz/Downloads/lib/javafx.controls.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/nbell/Downloads/javafx-sdk-23.0.1/lib/javafx.graphics.jar">
+	<classpathentry kind="lib" path="C:/Users/cocoz/Downloads/lib/javafx.fxml.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/nbell/Downloads/javafx-sdk-23.0.1/lib/javafx.media.jar">
+	<classpathentry kind="lib" path="C:/Users/cocoz/Downloads/lib/javafx.graphics.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/nbell/Downloads/javafx-sdk-23.0.1/lib/javafx.swing.jar">
+	<classpathentry kind="lib" path="C:/Users/cocoz/Downloads/lib/javafx.media.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/nbell/Downloads/javafx-sdk-23.0.1/lib/javafx.web.jar">
+	<classpathentry kind="lib" path="C:/Users/cocoz/Downloads/lib/javafx.swing.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/nbell/Downloads/javafx-sdk-23.0.1/lib/javafx-swt.jar">
+	<classpathentry kind="lib" path="C:/Users/cocoz/Downloads/lib/javafx.web.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/nbell/Desktop/Metodi Avanzati di Programmazione/Slides PROGETTO/LAB 4/mysql-connector-java-8.0.17.jar"/>
+	<classpathentry kind="lib" path="C:/Users/cocoz/Downloads/lib/javafx-swt.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

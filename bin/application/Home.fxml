@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -15,7 +19,7 @@
       </Text>
       <TextField fx:id="hostNameInput" layoutX="225.0" layoutY="134.0" text="localhost" />
       <Text fill="WHITE" layoutX="226.0" layoutY="123.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nome host:" wrappingWidth="83.47003173828125" />
-      <Button fx:id="connetti" layoutX="327.0" layoutY="254.0" mnemonicParsing="false" onAction="#connetti" text="Cerca" />
+      <Button fx:id="connetti" layoutX="503.0" layoutY="334.0" mnemonicParsing="false" onAction="#connetti" text="Cerca" />
       <TextField fx:id="portInput" layoutX="225.0" layoutY="199.0" text="8000" />
       <Text fill="WHITE" layoutX="226.0" layoutY="188.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Porta:" wrappingWidth="83.47003173828125" />
    </children>

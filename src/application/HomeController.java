@@ -21,6 +21,7 @@ public class HomeController {
     
     @FXML
     private void connetti() {
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("Options.fxml"));
         String ip = hostNameInput.getText();
         int port = Integer.parseInt(portInput.getText());
         
