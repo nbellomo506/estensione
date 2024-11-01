@@ -17,11 +17,11 @@
       </Text>
       <TextField fx:id="tableNameInput" layoutX="235.0" layoutY="127.0" promptText="inserisci tabella" />
       <Text fill="WHITE" layoutX="235.0" layoutY="115.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nome tabella:" wrappingWidth="83.47003173828125" />
-      <Button fx:id="avantiButton" onAction="#handleAvantiButton" layoutX="453.0" layoutY="334.0" mnemonicParsing="false" text="Avanti &gt;" />
+      <Button fx:id="avantiButton" layoutX="453.0" layoutY="334.0" mnemonicParsing="false" onAction="#handleAvantiButton" text="Avanti &gt;" />
       <VBox fx:id="sceltaInput" layoutX="203.0" layoutY="187.0" prefHeight="46.0" prefWidth="231.0">
          <children>  
-            <RadioButton fx:id="scelta1" prefHeight="17.0" prefWidth="225.0" text="Carica Dendrogramma da File" textFill="WHITE" />
-            <RadioButton fx:id="scelta2" prefHeight="29.0" prefWidth="279.0" text="Apprendi Dendrogramma da Database" textFill="WHITE" />
+            <RadioButton fx:id="scelta1" text="Carica dendrogramma" toggleGroup="$optionsGroup"/>
+            <RadioButton fx:id="scelta2" text="Apprendi dendrogramma" toggleGroup="$optionsGroup"/>
          </children>
       </VBox>
    </children>

@@ -10,6 +10,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.Connection;
+import java.io.File;
+import java.io.FileInputStream;
 
 import database.DatabaseConnectionException;
 import database.DbAccess;
@@ -55,147 +57,154 @@ public class ServerOneClient extends Thread {
     public void run() {
         try {
             while (true) {
-                // Legge il nome della tabella
-                tabella = (String) in.readObject();
+                // Leggi il tipo di operazione
+                Object input = in.readObject();
                 
-                // Verifica l'esistenza della tabella
-                String message;
-                try {
-                    if (tableExists(db.getConnection(), tabella)) {
-                        message = "OK";
-                    } else {
-                        message = "La tabella " + tabella + " non esiste nel database.";
-                    }
-                } catch (SQLException | DatabaseConnectionException e) {
-                    message = "Errore durante la verifica della tabella: " + e.getMessage();
-                }
-
-                // Invia la risposta al client
-                out.writeObject(message);
-
-                // Se la tabella non esiste, continua con la prossima iterazione
-                if (!message.equals("OK")) {
-                    continue;
-                }
-
-                // Legge la scelta del client
-                int scelta = (Integer) in.readObject();
-                
-                switch (scelta) {
-                    case 1: {
-                        String nomeFile = (String) in.readObject(); // Legge il nome del file
-                        String risposta = "OK";
-                        String dendrogrammaFile = null;
-                        try {
-                        	HierachicalClusterMiner minerFile = HierachicalClusterMiner.loadHierachicalClusterMiner(nomeFile); // Carica il miner dal file
-                        	dendrogrammaFile = minerFile.toString(); // Ottiene il dendrogramma
-                        }
-                      
-                        catch(FileNotFoundException e) {
-                        	risposta = "Il file specificato è inesistente";
-                        	
-                        }catch(Exception e) {
-                        	risposta = "Errore in fase di caricamento del miner da file";
-                        }
-                        finally {
-                            out.writeObject(risposta); // Invia la risposta al client
-                        }
-             
-                        if(risposta == "OK")
-                        	out.writeObject(dendrogrammaFile); // Invia il dendrogramma al client
-                        break;
-                    }
-                    case 2: {
-                        int depth = (Integer) in.readObject(); // Legge la profondità richiesta
-                        int dType = (Integer) in.readObject(); // Legge il tipo di distanza
-                        ClusterDistance distance = null;
-                        if(dType == 1)
-                        	distance = new SingleLinkDistance();
-                        else
-                        	distance = new AverageLinkDistance();
-
-                   
-                        // Apprende il dendrogramma e gestisce eventuali eccezioni
-                        String dendrogramma = null;
-                        String risposta = "OK";
-                        HierachicalClusterMiner minerDB = null;
-                        
-                        Data data = null;
-						try {
-							data = new Data(tabella);
-						} catch (NoDataException e) {
-							// TODO Auto-generated catch block
-							risposta = "Errore. La tabella indicata è vuota";
-						}
-                        try {
-                            // Creazione di un'istanza di HierachicalClusterMiner con profondità
-                            minerDB = new HierachicalClusterMiner(depth); 
-                            minerDB.mine(data,distance); // Apprende il dendrogramma
-                            dendrogramma = minerDB.toString();
-                        }
-                      
-                        catch (NegativeDepthException e) {
-                        	risposta = "Errore. Profondità del dendrogramma non valida.\n";
-                        	risposta += "Deve essere > 0.";
+                // Se l'input è un intero, è una scelta operazione
+                if (input instanceof Integer) {
+                    int scelta = (Integer) input;
                     
-                        } catch (InvalidDepthException e) {
-                        	risposta = "Errore. Profondità del dendrogramma non valida.\n";
-                        	risposta += "Deve essere <= " + data.getNumberOfExamples();
-                        	
-                        } finally {
-                        	//risponde al client con un ok oppure errore
-                            out.writeObject(risposta);
+                    switch (scelta) {
+                        case 1: { // Carica da file
+                            String nomeFile = (String) in.readObject();
+                            String risposta = "OK";
+                            String dendrogrammaFile = null;
+                            
+                            try {
+                                if (!nomeFile.toLowerCase().endsWith(".dat")) {
+                                    risposta = "Il file deve avere estensione .dat";
+                                } else {
+                                    File file = new File(nomeFile);
+                                    if (!file.exists()) {
+                                        risposta = "Il file " + nomeFile + " non esiste";
+                                    } else {
+                                        try (ObjectInputStream fileIn = new ObjectInputStream(new FileInputStream(file))) {
+                                            Object obj = fileIn.readObject();
+                                            if (obj instanceof HierachicalClusterMiner) {
+                                                HierachicalClusterMiner minerFile = (HierachicalClusterMiner) obj;
+                                                dendrogrammaFile = minerFile.toString();
+                                            } else {
+                                                risposta = "Il file non contiene un dendrogramma valido";
+                                            }
+                                        } catch (Exception e) {
+                                            risposta = "Errore durante la lettura del file: " + e.getMessage();
+                                        }
+                                    }
+                                }
+                            } finally {
+                                out.writeObject(risposta);
+                                if (risposta.equals("OK") && dendrogrammaFile != null) {
+                                    out.writeObject(dendrogrammaFile);
+                                }
+                            }
+                            break;
                         }
                         
-                        if(risposta != "OK")
-                        	break;
-                     
-             
-                        /* Invia il dendrogramma al client */
-                        out.writeObject(dendrogramma); 
-                        String fileName = (String) in.readObject(); // Legge il nome del file di salvataggio
-                        String rispostaSalvataggio = "OK";
-                        try {
-                            minerDB.salva(fileName); // Salva il miner nel file
-                        }catch(FileNotFoundException e){
-                        	rispostaSalvataggio = "Impossibile salvare il file nel percorso specificato.\n"
-                        			+ "Il percorso potrebbe essere errato oppure non si dispongono dei permessi\n"
-                        			+ "per accedere alla cartella";
-                        }catch(IOException e){
-                        	rispostaSalvataggio = "Errore nel salvataggio del file, controllare che\n"
-                        			+ "- Lo spazio su disco non sia esaurito;\n"
-                        			+ "- Il percorso non sia protetto;\n"
-                        			+ "- La scrittura non sia stata interrotta;\n"
-                        			+ "- Il file system non sia corrotto.";
-                        }catch(Exception e) {
-                        	rispostaSalvataggio = e.getMessage();
-                        }
-                        finally {
-                            if (rispostaSalvataggio != "OK")
-                            	rispostaSalvataggio = "Operazione annullata:\n" + rispostaSalvataggio;
-                            out.writeObject(rispostaSalvataggio);
-                        }
-                        break;
+                        case 2: { // Apprendi da database
+                            int depth = (Integer) in.readObject(); // Legge la profondità richiesta
+                            int dType = (Integer) in.readObject(); // Legge il tipo di distanza
+                            ClusterDistance distance = null;
+                            if(dType == 1)
+                            	distance = new SingleLinkDistance();
+                            else
+                            	distance = new AverageLinkDistance();
 
+                       
+                            // Apprende il dendrogramma e gestisce eventuali eccezioni
+                            String dendrogramma = null;
+                            String risposta = "OK";
+                            HierachicalClusterMiner minerDB = null;
+                            
+                            Data data = null;
+							try {
+								data = new Data(tabella);
+							} catch (NoDataException e) {
+								// TODO Auto-generated catch block
+								risposta = "Errore. La tabella indicata è vuota";
+							}
+                            try {
+                                // Creazione di un'istanza di HierachicalClusterMiner con profondità
+                                minerDB = new HierachicalClusterMiner(depth); 
+                                minerDB.mine(data,distance); // Apprende il dendrogramma
+                                dendrogramma = minerDB.toString();
+                            }
+                          
+                            catch (NegativeDepthException e) {
+                            	risposta = "Errore. Profondità del dendrogramma non valida.\n";
+                            	risposta += "Deve essere > 0.";
+                        
+                            } catch (InvalidDepthException e) {
+                            	risposta = "Errore. Profondità del dendrogramma non valida.\n";
+                            	risposta += "Deve essere <= " + data.getNumberOfExamples();
+                            	
+                            } finally {
+                            	//risponde al client con un ok oppure errore
+                                out.writeObject(risposta);
+                            }
+                            
+                            if(risposta != "OK")
+                            	break;
+                         
+             
+                            /* Invia il dendrogramma al client */
+                            out.writeObject(dendrogramma); 
+                            String fileName = (String) in.readObject(); // Legge il nome del file di salvataggio
+                            String rispostaSalvataggio = "OK";
+                            try {
+                                minerDB.salva(fileName); // Salva il miner nel file
+                            }catch(FileNotFoundException e){
+                            	rispostaSalvataggio = "Impossibile salvare il file nel percorso specificato.\n"
+                            			+ "Il percorso potrebbe essere errato oppure non si dispongono dei permessi\n"
+                            			+ "per accedere alla cartella";
+                            }catch(IOException e){
+                            	rispostaSalvataggio = "Errore nel salvataggio del file, controllare che\n"
+                            			+ "- Lo spazio su disco non sia esaurito;\n"
+                            			+ "- Il percorso non sia protetto;\n"
+                            			+ "- La scrittura non sia stata interrotta;\n"
+                            			+ "- Il file system non sia corrotto.";
+                            }catch(Exception e) {
+                            	rispostaSalvataggio = e.getMessage();
+                            }
+                            finally {
+                                if (rispostaSalvataggio != "OK")
+                                	rispostaSalvataggio = "Operazione annullata:\n" + rispostaSalvataggio;
+                                out.writeObject(rispostaSalvataggio);
+                            }
+                            break;
+
+                        }
+                        default:
+                            out.writeObject("Operazione non valida");
+                            break;
                     }
-                    default:
-                        System.out.println("Scelta non valida."); // Gestisce scelte non valide
-                        break;
+                }
+                // Se l'input è una stringa, è il nome della tabella
+                else if (input instanceof String) {
+                    tabella = (String) input;
+                    String message;
+                    try {
+                        if (tableExists(db.getConnection(), tabella)) {
+                            message = "OK";
+                        } else {
+                            message = "La tabella " + tabella + " non esiste nel database.";
+                        }
+                    } catch (SQLException | DatabaseConnectionException e) {
+                        message = "Errore durante la verifica della tabella: " + e.getMessage();
+                    }
+                    out.writeObject(message);
                 }
             }
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace(); // Stampa l'eccezione in caso di errore
-		} finally {
+            e.printStackTrace();
+        } finally {
             try {
-                in.close(); // Chiude lo stream di input
-                out.close(); // Chiude lo stream di output
-                socket.close(); // Chiude il socket
-                db.closeConnection(); // Assicurati di chiudere la connessione al database
-            } catch (IOException e) {
-                e.printStackTrace(); // Stampa l'eccezione in caso di errore
-            } catch (SQLException e) {
-				e.printStackTrace(); // Stampa l'eccezione in caso di errore
-			}
+                socket.close();
+                in.close();
+                out.close();
+                db.closeConnection();
+            } catch (IOException | SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

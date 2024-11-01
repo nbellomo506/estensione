@@ -19,9 +19,11 @@
     
     <!-- Componenti per File -->
     <VBox fx:id="fileComponents" spacing="10" styleClass="input-container">
-        <HBox alignment="CENTER" spacing="10">
-            <TextField fx:id="fileNameInput" promptText="Nome file (con estensione)" styleClass="input-field" HBox.hgrow="ALWAYS" />
-            <Button fx:id="loadFileButton" onAction="#handleLoadFile" styleClass="action-button" text="Carica File" />
+        <HBox spacing="10" alignment="CENTER">
+            <TextField fx:id="fileNameInput" promptText="Seleziona un file .dat" 
+                       editable="false" HBox.hgrow="ALWAYS"/>
+            <Button text="Sfoglia" onAction="#handleLoadFile"/>
+            <Button fx:id="reloadButton" text="Ricarica" onAction="#handleReload"/>
         </HBox>
     </VBox>
     

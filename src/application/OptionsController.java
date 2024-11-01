@@ -95,7 +95,10 @@ public class OptionsController implements Initializable {
             
             SceltaController sceltaController = loader.getController();
             sceltaController.setStreams(out, in);
-            sceltaController.setSelectedOption(selectedRadioButton.getText());
+            
+            // Modifica qui: passa il testo esatto che ci aspettiamo
+            String selectedOption = selectedRadioButton.getText().equals("Carica dendrogramma") ? "File" : "Database";
+            sceltaController.setSelectedOption(selectedOption);
             sceltaController.setTableName(tableName);
             
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();

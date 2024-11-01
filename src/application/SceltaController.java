@@ -15,6 +15,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.layout.VBox;
 import javafx.beans.property.SimpleStringProperty;
 import java.util.Arrays;
+import javafx.stage.FileChooser;
+import java.io.File;
 
 public class SceltaController {
     @FXML
@@ -29,6 +31,8 @@ public class SceltaController {
     private TextField fileNameInput;
     @FXML
     private Button loadFileButton;
+    @FXML
+    private Button reloadButton;
     
     // Componenti per scelta 2 (Database)
     @FXML
@@ -39,43 +43,54 @@ public class SceltaController {
     private ComboBox<String> distanceType;
     @FXML
     private Button executeButton;
+    @FXML
+    private Button saveButton;
+    @FXML
+    private TextField saveFileInput;
     
     private String selectedOption;
     private String tableName;
     private ObjectOutputStream out;
     private ObjectInputStream in;
+    private File lastUsedDirectory;
     
     @FXML
     public void initialize() {
-        // Inizializza la colonna della TableView
-        dendrogramColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue()));
-        
-        // Nascondi inizialmente tutti i componenti specifici
-        fileComponents.setVisible(false);
-        fileComponents.setManaged(false);
-        dbComponents.setVisible(false);
-        dbComponents.setManaged(false);
-        
-        // Setup ComboBox per il tipo di distanza
-        distanceType.getItems().addAll("Single Link", "Average Link");
-        
-        // Disabilita inizialmente i controlli di salvataggio
-        saveButton.setDisable(true);
-        saveFileInput.setDisable(true);
-        
-        // Inizializza la TableView con una larghezza appropriata
-        dendrogramColumn.prefWidthProperty().bind(dendrogramTable.widthProperty().multiply(0.98));
-        
-        // Aggiungi listener per validazione input
-        depthInput.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*")) {
-                depthInput.setText(newValue.replaceAll("[^\\d]", ""));
-            }
-        });
+        try {
+            // Inizializza la colonna della TableView
+            dendrogramColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue()));
+            
+            // Nascondi inizialmente tutti i componenti specifici
+            fileComponents.setVisible(false);
+            fileComponents.setManaged(false);
+            dbComponents.setVisible(false);
+            dbComponents.setManaged(false);
+            
+            // Setup ComboBox per il tipo di distanza
+            distanceType.getItems().addAll("Single Link", "Average Link");
+            
+            // Disabilita inizialmente i controlli di salvataggio
+            saveButton.setDisable(true);
+            saveFileInput.setDisable(true);
+            
+            // Inizializza la TableView con una larghezza appropriata
+            dendrogramColumn.prefWidthProperty().bind(dendrogramTable.widthProperty().multiply(0.98));
+            
+            // Aggiungi listener per validazione input
+            depthInput.textProperty().addListener((observable, oldValue, newValue) -> {
+                if (!newValue.matches("\\d*")) {
+                    depthInput.setText(newValue.replaceAll("[^\\d]", ""));
+                }
+            });
+        } catch (Exception e) {
+            showAlert("Errore di inizializzazione", e.getMessage());
+        }
     }
     
     public void setSelectedOption(String option) {
         this.selectedOption = option;
+        
+        System.out.println("Opzione selezionata: " + option); // Debug
         
         // Mostra solo i componenti relativi alla scelta selezionata
         if (option.equals("File")) {
@@ -84,24 +99,28 @@ public class SceltaController {
             dbComponents.setVisible(false);
             dbComponents.setManaged(false);
             
-            // Pulisci la TableView
-            dendrogramTable.getItems().clear();
+            System.out.println("Mostro componenti File"); // Debug
             
-            // Reset componenti scelta 2
-            depthInput.clear();
-            distanceType.getSelectionModel().clearSelection();
-            saveFileInput.clear();
-            
-        } else {
+        } else if (option.equals("Database")) {
             fileComponents.setVisible(false);
             fileComponents.setManaged(false);
             dbComponents.setVisible(true);
             dbComponents.setManaged(true);
             
-            // Pulisci la TableView
-            dendrogramTable.getItems().clear();
-            
-            // Reset componenti scelta 1
+            System.out.println("Mostro componenti Database"); // Debug
+        } else {
+            System.out.println("Opzione non riconosciuta: " + option); // Debug
+        }
+        
+        // Pulisci sempre la TableView
+        dendrogramTable.getItems().clear();
+        
+        // Reset dei componenti non utilizzati
+        if (option.equals("File")) {
+            depthInput.clear();
+            distanceType.getSelectionModel().clearSelection();
+            saveFileInput.clear();
+        } else {
             fileNameInput.clear();
         }
     }
@@ -109,25 +128,62 @@ public class SceltaController {
     @FXML
     private void handleLoadFile() {
         try {
-            // Invia esplicitamente la scelta 1
+            // Crea un FileChooser
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Seleziona file dendrogramma");
+            
+            // Imposta il filtro per i file .dat
+            FileChooser.ExtensionFilter datFilter = 
+                new FileChooser.ExtensionFilter("File DAT (*.dat)", "*.dat");
+            fileChooser.getExtensionFilters().add(datFilter);
+            
+            // Imposta la directory iniziale
+            if (lastUsedDirectory != null) {
+                fileChooser.setInitialDirectory(lastUsedDirectory);
+            }
+            
+            // Mostra il dialog per selezionare il file
+            File selectedFile = fileChooser.showOpenDialog(fileNameInput.getScene().getWindow());
+            
+            if (selectedFile != null) {
+                // Aggiorna l'ultima directory usata
+                lastUsedDirectory = selectedFile.getParentFile();
+                
+                // Aggiorna il campo di testo con il percorso del file
+                fileNameInput.setText(selectedFile.getAbsolutePath());
+                
+                loadDendrogramFromFile(selectedFile);
+            }
+        } catch (Exception e) {
+            showAlert("Errore", "Errore durante la selezione del file: " + e.getMessage());
+        }
+    }
+
+    private void loadDendrogramFromFile(File file) {
+        try {
+            // Pulisci la tabella prima di caricare il nuovo file
+            dendrogramTable.getItems().clear();
+            
+            // Invia la scelta e il nome del file al server
             out.writeObject(1);
             out.flush();
-            
-            String fileName = fileNameInput.getText().trim();
-            if (fileName.isEmpty()) {
-                showAlert("Errore", "Inserire il nome del file");
-                return;
-            }
-
-            out.writeObject(fileName);
+            out.writeObject(file.getAbsolutePath());
             out.flush();
 
+            // Gestione della risposta
             String risposta = (String) in.readObject();
             if (risposta.equals("OK")) {
                 String dendrogramma = (String) in.readObject();
-                String[] rows = dendrogramma.split("\n");
-                dendrogramTable.getItems().clear();
-                dendrogramTable.getItems().addAll(Arrays.asList(rows));
+                if (dendrogramma != null && !dendrogramma.trim().isEmpty()) {
+                    String[] rows = dendrogramma.split("\n");
+                    dendrogramTable.getItems().addAll(Arrays.asList(rows));
+                    
+                    // Opzionale: mostra un messaggio di successo
+                    showSuccess("Caricamento completato", 
+                              "Il dendrogramma è stato caricato correttamente");
+                } else {
+                    showAlert("Errore", "Il dendrogramma è vuoto");
+                }
             } else {
                 showAlert("Errore", risposta);
             }
@@ -135,7 +191,23 @@ public class SceltaController {
             showAlert("Errore", "Errore di comunicazione con il server: " + e.getMessage());
         }
     }
-    
+
+    @FXML
+    private void handleReload() {
+        if (fileNameInput.getText().isEmpty()) {
+            showAlert("Errore", "Nessun file precedentemente caricato");
+            return;
+        }
+        
+        File currentFile = new File(fileNameInput.getText());
+        if (!currentFile.exists()) {
+            showAlert("Errore", "Il file non esiste più");
+            return;
+        }
+        
+        loadDendrogramFromFile(currentFile);
+    }
+
     @FXML
     private void handleExecute() {
         try {
@@ -228,12 +300,6 @@ public class SceltaController {
         alert.showAndWait();
     }
 
-    // Aggiungi questi campi alla classe
-    @FXML
-    private Button saveButton;
-    @FXML
-    private TextField saveFileInput;
-
     // Aggiungi questi metodi per gestire lo stato dei componenti
     public void setStreams(ObjectOutputStream out, ObjectInputStream in) {
         this.out = out;
@@ -243,8 +309,9 @@ public class SceltaController {
     public void setTableName(String tableName) {
         this.tableName = tableName;
     }
+
     private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
