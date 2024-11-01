@@ -2,6 +2,8 @@ package application;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.io.ObjectOutputStream;
+import java.io.ObjectInputStream;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -26,6 +28,12 @@ public class HomeController {
     @FXML 
     private TextField portInput;
     static Parent root;
+    private ObjectOutputStream out;
+    private ObjectInputStream in;
+    public void setStreams(ObjectOutputStream out, ObjectInputStream in) {
+        this.out = out;
+        this.in = in;
+    }
     @FXML
     private void connetti(ActionEvent event) throws IOException {
         String ip = hostNameInput.getText();
@@ -33,7 +41,15 @@ public class HomeController {
         
         try {
             Socket socket = new Socket(ip, port);
-            AnchorPane root = (AnchorPane)FXMLLoader.load(getClass().getResource("Options.fxml"));
+            ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+            ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+            
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("Options.fxml"));
+            AnchorPane root = loader.load();
+
+            OptionsController optionsController = loader.getController();
+            optionsController.setStreams(out, in);
+
             Scene scene = new Scene(root,600,400);
             
             Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();

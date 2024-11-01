@@ -55,44 +55,33 @@ public class ServerOneClient extends Thread {
     public void run() {
         try {
             while (true) {
-                int scelta;
+                // Legge il nome della tabella
+                tabella = (String) in.readObject();
+                
+                // Verifica l'esistenza della tabella
+                String message;
                 try {
-                    scelta = (Integer) in.readObject(); //Leggo la scelta del client
-                } catch (IOException | ClassNotFoundException e) {
-                    System.out.println("Il client si è disconnesso , oppure c'è stato un errore nella lettura della scelta: " + e.getMessage());
-                    break;
+                    if (tableExists(db.getConnection(), tabella)) {
+                        message = "OK";
+                    } else {
+                        message = "La tabella " + tabella + " non esiste nel database.";
+                    }
+                } catch (SQLException | DatabaseConnectionException e) {
+                    message = "Errore durante la verifica della tabella: " + e.getMessage();
                 }
+
+                // Invia la risposta al client
+                out.writeObject(message);
+
+                // Se la tabella non esiste, continua con la prossima iterazione
+                if (!message.equals("OK")) {
+                    continue;
+                }
+
+                // Legge la scelta del client
+                int scelta = (Integer) in.readObject();
+                
                 switch (scelta) {
-                		
-	                case 0: {
-	                    
-	                    String message = "OK";
-	                    tabella = (String) in.readObject(); // Legge il nome della tabella
-	
-	                    // Controllo dell'esistenza della tabella prima di eseguire la query
-	                    try {
-							if (tableExists(db.getConnection(), tabella)) {
-							    String query = "SELECT * FROM " + tabella;
-							    try (Statement stmt = db.getConnection().createStatement()) {
-							        try {
-							            stmt.executeQuery(query);
-							        } catch (SQLException e) {
-							            message = e.getMessage(); // Errore durante l'esecuzione della query
-							        }
-							    } catch (SQLException e) {
-							        message = "Errore di connessione al database: " + e.getMessage();
-							    }
-							} else {
-							    message = "La tabella " + tabella + " non esiste nel database.";
-							}
-						} catch (SQLException | DatabaseConnectionException e) {
-							// TODO Auto-generated catch block
-							message = e.getMessage();
-						}
-	
-	                    out.writeObject(message); // Invia il messaggio al client
-	                    break;
-	                }
                     case 1: {
                         String nomeFile = (String) in.readObject(); // Legge il nome del file
                         String risposta = "OK";

@@ -58,3 +58,36 @@
     -fx-scale-x: 1.05;
     -fx-scale-y: 1.05;
 }
+.dendrogram-table {
+    -fx-background-color: #f8f9fa;
+    -fx-border-color: #dee2e6;
+}
+
+.input-container {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #dee2e6;
+    -fx-border-radius: 5;
+    -fx-padding: 10;
+}
+
+.input-field {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #ced4da;
+    -fx-border-radius: 3;
+}
+
+.action-button {
+    -fx-background-color: #007bff;
+    -fx-text-fill: white;
+    -fx-border-radius: 3;
+}
+
+.action-button:hover {
+    -fx-background-color: #0056b3;
+}
+
+.combo-box {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #ced4da;
+    -fx-border-radius: 3;
+}
