@@ -32,7 +32,7 @@ public class SceltaController {
     @FXML
     private Button loadFileButton;
     @FXML
-    private Button reloadButton;
+    private Button createButton;
     
     // Componenti per scelta 2 (Database)
     @FXML
@@ -46,7 +46,9 @@ public class SceltaController {
     @FXML
     private Button saveButton;
     @FXML
-    private TextField saveFileInput;
+    private Button runButton;
+    
+
     
     private String selectedOption;
     private String tableName;
@@ -71,7 +73,7 @@ public class SceltaController {
             
             // Disabilita inizialmente i controlli di salvataggio
             saveButton.setDisable(true);
-            saveFileInput.setDisable(true);
+            runButton.setDisable(false);
             
             // Inizializza la TableView con una larghezza appropriata
             dendrogramColumn.prefWidthProperty().bind(dendrogramTable.widthProperty().multiply(0.98));
@@ -119,7 +121,7 @@ public class SceltaController {
         if (option.equals("File")) {
             depthInput.clear();
             distanceType.getSelectionModel().clearSelection();
-            saveFileInput.clear();
+           
         } else {
             fileNameInput.clear();
         }
@@ -207,6 +209,15 @@ public class SceltaController {
         
         loadDendrogramFromFile(currentFile);
     }
+    @FXML
+    private void handleCreate() {
+        setSelectedOption("Database");
+    }
+    @FXML
+    private void handleRun() {
+        setSelectedOption("File");
+    }
+    
 
     @FXML
     private void handleExecute() {
@@ -252,12 +263,12 @@ public class SceltaController {
                 
                 // Abilita il pulsante di salvataggio
                 saveButton.setDisable(false);
-                saveFileInput.setDisable(false);
+                runButton.setDisable(false);
             } else {
                 showAlert("Errore", risposta);
                 // Disabilita il salvataggio in caso di errore
                 saveButton.setDisable(true);
-                saveFileInput.setDisable(true);
+                runButton.setDisable(true);
             }
 
         } catch (IOException | ClassNotFoundException e) {
@@ -268,24 +279,36 @@ public class SceltaController {
     @FXML
     private void handleSave() {
         try {
-            String fileName = saveFileInput.getText().trim();
-            if (fileName.isEmpty()) {
-                showAlert("Errore", "Inserire il nome del file per il salvataggio");
-                return;
+            // Crea un FileChooser
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Salva Dendrogramma");
+            
+            // Imposta il filtro per i file .dat
+            FileChooser.ExtensionFilter datFilter = 
+                new FileChooser.ExtensionFilter("File DAT (*.dat)", "*.dat");
+            fileChooser.getExtensionFilters().add(datFilter);
+            
+            // Mostra il dialog per salvare il file
+            File file = fileChooser.showSaveDialog(saveButton.getScene().getWindow());
+            
+            if (file != null) {
+                // Assicurati che il file abbia l'estensione .dat
+                if (!file.getName().toLowerCase().endsWith(".dat")) {
+                    file = new File(file.getAbsolutePath() + ".dat");
+                }
+
+                // Invia nome file al server
+                out.writeObject(file.getAbsolutePath());
+                out.flush();
+
+                // Ricevi risposta del salvataggio
+                String rispostaSalvataggio = (String) in.readObject();
+                if (rispostaSalvataggio.equals("OK")) {
+                    showSuccess("Salvataggio completato", "Il file è stato salvato correttamente");
+                } else {
+                    showAlert("Errore", rispostaSalvataggio);
+                }
             }
-
-            // Invia nome file al server
-            out.writeObject(fileName);
-            out.flush();
-
-            // Ricevi risposta del salvataggio
-            String rispostaSalvataggio = (String) in.readObject();
-            if (rispostaSalvataggio.equals("OK")) {
-                showSuccess("Salvataggio completato", "Il file è stato salvato correttamente");
-            } else {
-                showAlert("Errore", rispostaSalvataggio);
-            }
-
         } catch (IOException | ClassNotFoundException e) {
             showAlert("Errore", "Errore durante il salvataggio: " + e.getMessage());
         }

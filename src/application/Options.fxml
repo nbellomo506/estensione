@@ -3,6 +3,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -17,11 +18,14 @@
       </Text>
       <TextField fx:id="tableNameInput" layoutX="235.0" layoutY="127.0" promptText="inserisci tabella" />
       <Text fill="WHITE" layoutX="235.0" layoutY="115.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nome tabella:" wrappingWidth="83.47003173828125" />
-      <Button fx:id="avantiButton" layoutX="453.0" layoutY="334.0" mnemonicParsing="false" onAction="#handleAvantiButton" text="Avanti &gt;" />
+      <Button fx:id="avantiButton" layoutX="453.0" layoutY="334.0" mnemonicParsing="false" onAction="#handleAvantiButton" text="Avanti" />
       <VBox fx:id="sceltaInput" layoutX="203.0" layoutY="187.0" prefHeight="46.0" prefWidth="231.0">
          <children>  
-            <RadioButton fx:id="scelta1" text="Carica dendrogramma" toggleGroup="$optionsGroup"/>
-            <RadioButton fx:id="scelta2" text="Apprendi dendrogramma" toggleGroup="$optionsGroup"/>
+            <RadioButton fx:id="scelta1" text="Carica dendrogramma">
+               <toggleGroup>
+                  <ToggleGroup fx:id="optionsGroup" />
+               </toggleGroup></RadioButton>
+            <RadioButton fx:id="scelta2" text="Apprendi dendrogramma" toggleGroup="$optionsGroup" />
          </children>
       </VBox>
    </children>
