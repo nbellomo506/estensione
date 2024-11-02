@@ -44,7 +44,7 @@ public class Main extends Application {
 		serverThread.start();
 
 		try {
-			primaryStage.setTitle("DENDROGRAMMA APPLICATION");
+			primaryStage.setTitle("H-CLUS APPLICATION");
 			Image icon = new Image("Logo.png");
 			primaryStage.getIcons().add(icon);
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("Info.fxml"));
@@ -61,7 +61,8 @@ public class Main extends Application {
 		}
 
 	}
-	public static void scene_scaling(Scene scene, final Region root) {
+	//Scala la scena in base alle dimensioni della finestra
+	public static void scene_scaling(Scene scene, final Pane root) {
 		final double initialWidth = scene.getWidth();
 		final double initialHeight = scene.getHeight();
 		
@@ -77,14 +78,14 @@ public class Main extends Application {
 			root.setScaleY(scale);
 		});
 		
-		if (root instanceof VBox) {
-			((VBox) root).setAlignment(Pos.CENTER);
+		// Imposta il layout per il BorderPane
+		if (root instanceof BorderPane) {
+			BorderPane.setAlignment(((BorderPane) root).getTop(), Pos.CENTER);
+			BorderPane.setAlignment(((BorderPane) root).getCenter(), Pos.CENTER);
+			BorderPane.setAlignment(((BorderPane) root).getBottom(), Pos.CENTER);
+		} else if (root instanceof VBox) {
+			// Imposta l'allineamento per VBox se necessario
 			VBox.setVgrow(root, Priority.ALWAYS);
-		} else if (root instanceof AnchorPane) {
-			AnchorPane.setTopAnchor(root, 0.0);
-			AnchorPane.setBottomAnchor(root, 0.0);
-			AnchorPane.setLeftAnchor(root, 0.0);
-			AnchorPane.setRightAnchor(root, 0.0);
 		}
 	}
 

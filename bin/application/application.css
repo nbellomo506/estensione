@@ -1,146 +1,187 @@
 /* Stile principale del container */
 .main-container {
-    -fx-background-color: linear-gradient(to bottom right, #051650, #0A2472); /* Sfondo gradiente */
-    
-    -fx-alignment: center; /* Allineamento al centro */
+    -fx-background-color: linear-gradient(to bottom right, #051650, #0A2472);
+    -fx-alignment: center;
+    -fx-padding: 10px;
+    -fx-spacing: 10px;
 }
 
 /* Stile per il Label del titolo */
 .label {
-    -fx-font-family: 'Segoe UI', sans-serif; /* Font del titolo */
-    -fx-font-size: 28px; /* Dimensione del font */
-    -fx-font-weight: bold; /* Grassetto */
-    -fx-text-fill: white !important; /* Colore del testo */
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 3); /* Effetto ombra */
-    -fx-padding: 0 0 20 0; /* Padding inferiore */
+    -fx-font-family: 'Segoe UI', sans-serif;
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white !important;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 3);
+    -fx-padding: 0 0 20 0;
 }
-
-/* Stile per l'ImageView */
-.image-view {
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 15, 0, 0, 5); /* Effetto ombra */
+.description-text{
+    -fx-font-family: 'Segoe UI', sans-serif;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: rgb(255, 255, 255) !important;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 3);
+    -fx-padding: 0 0 20 0;
 }
-
-/* Stile per il Text della descrizione */
-.text {
-    -fx-font-family: 'Segoe UI', sans-serif; /* Font del testo */
-    -fx-fill: white !important; /* Colore del testo */
-    -fx-font-size: 18px; /* Dimensione del font */
-    -fx-text-alignment: center; /* Allineamento del testo */
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 0, 2); /* Effetto ombra */
-}
-
-/* Stile per il Button */
-.button {
-    -fx-background-color: #098f8d; /* Colore di sfondo */
-    -fx-text-fill: white; /* Colore del testo */
-    -fx-font-size: 10px; /* Dimensione del font */
-    -fx-font-weight: bold; /* Grassetto */
-    -fx-padding: 10 30; /* Padding interno */
-    -fx-background-radius: 25; /* Raggio di curvatura */
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 8, 0, 0, 2); /* Effetto ombra */
-    -fx-cursor: hand; /* Cursore a mano */
-}
-
-/* Effetto hover per il Button */
-.button:hover {
-    -fx-background-color: #098f8d; /* Colore di sfondo al passaggio del mouse */
-    -fx-scale-x: 1.05; /* Scala orizzontale */
-    -fx-scale-y: 1.05; /* Scala verticale */
-}
-
-/* Effetto quando il Button è premuto */
-.button:pressed {
-    -fx-background-color: #1da8a6; /* Colore di sfondo quando premuto */
-    -fx-scale-x: 0.95; /* Scala orizzontale */
-    -fx-scale-y: 0.95; /* Scala verticale */
-}
-
-/* Effetto hover per l'immagine */
-.image-view:hover {
-    -fx-scale-x: 1.05; /* Scala orizzontale al passaggio del mouse */
-    -fx-scale-y: 1.05; /* Scala verticale al passaggio del mouse */
-}
-
 /* Stile per la tabella dendrogramma */
 .dendrogram-table {
-    -fx-background-color: #858282b4; /* Colore di sfondo */
-    -fx-border-color: #dee2e6; /* Colore del bordo */
-    -fx-text-fill: white; /* Colore del testo */
-    
+    -fx-background-color: #858282b4;
+    -fx-border-color: #dee2e6;
+    -fx-text-fill: white;
+    -fx-table-cell-border-color: #868585;
 }
 
-/* Stile per le righe della tabella */
 .dendrogram-table .table-row-cell {
-    -fx-background-color: #858282b4; /* Colore di sfondo delle righe */
-    -fx-border-color: #868585; /* Colore del bordo */
+    -fx-background-color: #858282b4;
+    -fx-border-color: #868585;
 }
 
-/* Stile per le righe selezionate */
 .dendrogram-table .table-row-cell:selected {
-    -fx-background-color: #007bff; /* Colore di sfondo quando selezionato */
-    -fx-text-fill: white; /* Colore del testo quando selezionato */
+    -fx-background-color: #007bff;
+    -fx-text-fill: white;
 }
 
-/* Stile per le intestazioni della tabella */
 .dendrogram-table .column-header {
-    -fx-background-color: #091f69; /* Colore di sfondo delle intestazioni */
-    -fx-text-fill: white; /* Colore del testo delle intestazioni */
+    -fx-background-color: #091f69;
+    -fx-text-fill: white;
+}
+
+.dendrogram-table .column-header .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 5px;
 }
 
 /* Stile per il contenitore di input */
 .input-container {
-    -fx-background-color: #071b5c; /* Colore di sfondo */
-    -fx-border-color: #ffffff00; /* Colore del bordo */
-    -fx-border-radius: 10; /* Raggio di curvatura del bordo */
-    -fx-padding: 10; /* Padding interno */
+    -fx-background-color: #071b5c;
+    -fx-border-color: transparent;
+    -fx-border-radius: 10;
+    -fx-padding: 10;
+    -fx-spacing: 10px;
 }
 
+.content-container {
+    -fx-padding: 20;
+    -fx-spacing: 20;
+}
+
+.button-container {
+    -fx-padding: 20;
+}
+
+.action-button {
+    -fx-min-width: 100;
+}
 /* Stile per il campo di input */
 .input-field {
-    -fx-background-color: #858282b4; /* Colore di sfondo */
-    -fx-border-color: #ced4da; /* Colore del bordo */
-    -fx-text-fill: white; /* Colore del testo */
-    -fx-border-radius: 3; /* Raggio di curvatura del bordo */
+    -fx-background-color: #858282b4;
+    -fx-border-color: #ced4da;
+    -fx-text-fill: white;
+    -fx-border-radius: 3;
+    -fx-prompt-text-fill: #c4c1c1;
 }
 
 /* Stile per il pulsante di azione */
 .action-button {
-    -fx-background-color: #098f8d; /* Colore di sfondo */
-    -fx-text-fill: white; /* Colore del testo */
-    -fx-min-width: 100; /* Dimensione minima del bottone */
-    -fx-min-height: 30; /* Altezza minima del bottone */
-    -fx-font-size: 10px; /* Dimensione del font */
-    -fx-font-weight: bold; /* Grassetto */
-    -fx-padding: 1 20; /* Padding interno */
-    -fx-background-radius: 25; /* Raggio di curvatura */
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 8, 0, 0, 2); /* Effetto ombra */
-    -fx-cursor: hand; /* Cursore a mano */
+    -fx-background-color: #098f8d;
+    -fx-text-fill: white;
+    -fx-min-width: 100;
+    -fx-min-height: 30;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 1 20;
+    -fx-background-radius: 25;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 8, 0, 0, 2);
+    -fx-cursor: hand;
 }
 
-/* Effetto hover per il pulsante di azione */
 .action-button:hover {
-    -fx-background-color: #22bbb8; /* Colore di sfondo al passaggio del mouse */
+    -fx-background-color: #22bbb8;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+.action-button:pressed {
+    -fx-background-color: #1da8a6;
+    -fx-scale-x: 0.95;
+    -fx-scale-y: 0.95;
 }
 
 /* Stile per il ComboBox */
 .combo-box {
-    -fx-background-color: #858282b4; /* Colore di sfondo */
-    -fx-text-fill: white; /* Colore del testo */
+    -fx-background-color: #858282b4;
+    -fx-text-fill: white;
+    -fx-border-color: #c4c1c1;
+    -fx-border-radius: 6;
+    -fx-min-width: 150px;
+}
+
+.combo-box .list-cell {
+    -fx-text-fill: white;
+    -fx-background-color: #a09e9e;
+}
+
+.combo-box .list-view {
+    -fx-background-color: #a09e9e;
+}
+
+.combo-box .list-cell:hover {
+    -fx-background-color: #098f8d;
+    -fx-text-fill: white;
+}
+
+/* Stile per la scrollbar */
+.scroll-bar:vertical,
+.scroll-bar:horizontal {
+    -fx-background-color: #071b5c;
+}
+
+.scroll-bar:vertical .thumb,
+.scroll-bar:horizontal .thumb {
+    -fx-background-color: #098f8d;
+}
+
+.scroll-bar:vertical .track,
+.scroll-bar:horizontal .track {
+    -fx-background-color: #091f69;
+}
+
+/* Media queries per il ridimensionamento responsivo */
+@media screen and (max-width: 800px) {
+    .title-label {
+        -fx-font-size: 18px;
+    }
     
-    -fx-border-color: #c4c1c1; /* Colore del bordo */
-    -fx-border-radius: 6; /* Raggio di curvatura del bordo */
+    .description-text {
+        -fx-font-size: 13px;
+    }
+    
+    .action-button {
+        -fx-min-width: 80;
+        -fx-font-size: 11px;
+    }
+    
+    .combo-box {
+        -fx-min-width: 120px;
+    }
 }
 
-
-/* Stile per le righe del popup */
-.combo-box .list-view .list-cell {
-    -fx-background-color: #a09e9e; /* Colore di sfondo delle righe */
-    -fx-text-fill: white; /* Colore del testo delle righe */
-   
-}
-
-/* Effetto hover per le righe del popup */
-.combo-box .list-view .list-cell:hover {
-    -fx-background-color: #098f8d; /* Colore di sfondo al passaggio del mouse */
-    -fx-text-fill: white; /* Colore del testo al passaggio del mouse */
+@media screen and (min-width: 1200px) {
+    .title-label {
+        -fx-font-size: 24px;
+    }
+    
+    .description-text {
+        -fx-font-size: 17px;
+    }
+    
+    .action-button {
+        -fx-min-width: 120;
+        -fx-font-size: 14px;
+    }
+    
+    .combo-box {
+        -fx-min-width: 180px;
+    }
 }

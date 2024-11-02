@@ -11,7 +11,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
@@ -45,12 +46,12 @@ public class HomeController {
             ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
             
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Options.fxml"));
-            AnchorPane root = loader.load();
+            VBox root = loader.load();
 
             OptionsController optionsController = loader.getController();
             optionsController.setStreams(out, in);
 
-            Scene scene = new Scene(root,600,400);
+            Scene scene = new Scene(root, 600, 400);
             
             Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             stage.setScene(scene);

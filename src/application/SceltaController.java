@@ -27,8 +27,7 @@ public class SceltaController {
     // Componenti per scelta 1 (File)
     @FXML
     private VBox fileComponents;
-    @FXML
-    private TextField fileNameInput;
+    
     @FXML
     private Button loadFileButton;
     @FXML
@@ -122,8 +121,6 @@ public class SceltaController {
             depthInput.clear();
             distanceType.getSelectionModel().clearSelection();
            
-        } else {
-            fileNameInput.clear();
         }
     }
     
@@ -145,14 +142,11 @@ public class SceltaController {
             }
             
             // Mostra il dialog per selezionare il file
-            File selectedFile = fileChooser.showOpenDialog(fileNameInput.getScene().getWindow());
+            File selectedFile = fileChooser.showOpenDialog(loadFileButton.getScene().getWindow());
             
             if (selectedFile != null) {
                 // Aggiorna l'ultima directory usata
                 lastUsedDirectory = selectedFile.getParentFile();
-                
-                // Aggiorna il campo di testo con il percorso del file
-                fileNameInput.setText(selectedFile.getAbsolutePath());
                 
                 loadDendrogramFromFile(selectedFile);
             }
@@ -196,18 +190,21 @@ public class SceltaController {
 
     @FXML
     private void handleReload() {
-        if (fileNameInput.getText().isEmpty()) {
-            showAlert("Errore", "Nessun file precedentemente caricato");
-            return;
-        }
-        
-        File currentFile = new File(fileNameInput.getText());
-        if (!currentFile.exists()) {
-            showAlert("Errore", "Il file non esiste più");
-            return;
-        }
-        
-        loadDendrogramFromFile(currentFile);
+        // Rimuovi il controllo su fileNameInput
+        // if (fileNameInput.getText().isEmpty()) {
+        //     showAlert("Errore", "Nessun file precedentemente caricato");
+        //     return;
+        // }
+
+        // Non è più necessario gestire il fileNameInput
+        // File currentFile = new File(fileNameInput.getText());
+        // if (!currentFile.exists()) {
+        //     showAlert("Errore", "Il file non esiste più");
+        //     return;
+        // }
+
+        // Puoi chiamare direttamente il metodo per caricare il file
+        // Se hai un modo alternativo per ottenere il file, implementalo qui
     }
     @FXML
     private void handleCreate() {

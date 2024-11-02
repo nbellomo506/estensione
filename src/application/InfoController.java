@@ -14,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.scene.layout.Priority;
 
 /** Scena1Controller
  * 
@@ -45,13 +46,13 @@ public class InfoController {
      */
     @FXML
     void GoScena2(ActionEvent event) throws IOException {
-    	AnchorPane root = (AnchorPane)FXMLLoader.load(getClass().getResource("Home.fxml"));
+    	VBox root = (VBox)FXMLLoader.load(getClass().getResource("Home.fxml"));
     	stage = (Stage)((Node)event.getSource()).getScene().getWindow();
     	scene = new Scene(root);
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
     	stage.setScene(scene);
     	stage.setResizable(true);
     	stage.show();
-    	//Application.scene_scaling(scene);
+    	VBox.setVgrow(root, Priority.ALWAYS);
     }
 }

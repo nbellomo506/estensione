@@ -19,6 +19,7 @@ import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.fxml.Initializable;
+import javafx.scene.layout.Priority;
 
 public class OptionsController implements Initializable {
 
@@ -39,6 +40,9 @@ public class OptionsController implements Initializable {
     
     private RadioButton selectedRadioButton;  // Aggiungi questa variabile
     
+    @FXML
+    private VBox sceltaInput; // Assicurati di avere un riferimento a questo VBox
+    
     
     
     @Override
@@ -53,6 +57,8 @@ public class OptionsController implements Initializable {
                 selectedRadioButton = (RadioButton) newValue;
             }
         });
+        
+        VBox.setVgrow(sceltaInput, Priority.ALWAYS); // Permette al VBox di crescere
     }
     
     public void setStreams(ObjectOutputStream out, ObjectInputStream in) {
