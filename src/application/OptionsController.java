@@ -75,8 +75,9 @@ public class OptionsController implements Initializable {
             return;
         }
 
-        String tableName = tableNameInput.getText();
-        if (tableName.trim().isEmpty()) {
+        String tableName = tableNameInput.getText().toString().trim();
+        
+        if (tableName.isEmpty()) {
             showAlert("Errore", "Inserisci il nome della tabella!");
             return;
         }
