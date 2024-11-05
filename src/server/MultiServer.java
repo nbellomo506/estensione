@@ -3,6 +3,12 @@ package server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /** MultiServer
  * 
@@ -17,11 +23,20 @@ public class MultiServer {
 	private int PORT = 8000;
 
 	/**
+	 * lista dei socket attivi.
+	 */
+	private List<Socket> activeSockets = new ArrayList<>();
+
+	private ScheduledExecutorService inactivityTimer;
+	private static final int INACTIVITY_TIMEOUT = 30; // Timeout di inattività in secondi
+
+	/**
 	 * costruttore della classe MultiServer.
 	 * @param port
 	 */
 	public MultiServer(int port) {
 		this.PORT = port;
+		startInactivityTimer();
 		run();
 	}
 	
@@ -65,4 +80,40 @@ public class MultiServer {
     public static void main(String args[]){
         new MultiServer(8000);
     }
+
+	/**
+	 * metodo che chiude tutte le connessioni attive.
+	 */
+	public void closeConnections() {
+		for (Socket socket : activeSockets) {
+			try {
+				if (!socket.isClosed()) {
+					socket.setSoTimeout(1000); // Imposta un timeout di 1 secondo
+					socket.close();
+					System.out.println("Connessione chiusa: " + socket);
+				}
+			} catch (SocketTimeoutException e) {
+				System.err.println("Timeout durante la chiusura del socket " + socket + ": " + e.getMessage());
+			} catch (IOException e) {
+				System.err.println("Errore durante la chiusura del socket " + socket + ": " + e.getMessage());
+			}
+		}
+		activeSockets.clear();
+		System.out.println("Tutte le connessioni sono state chiuse.");
+		inactivityTimer.shutdown(); // Ferma il timer di inattività
+	}
+
+	private void startInactivityTimer() {
+		inactivityTimer = Executors.newSingleThreadScheduledExecutor();
+		inactivityTimer.schedule(() -> {
+			System.out.println("Timeout di inattività raggiunto. Chiudendo il server...");
+			closeConnections();
+			System.exit(0); // Chiudi l'applicazione
+		}, INACTIVITY_TIMEOUT, TimeUnit.SECONDS);
+	}
+
+	public void resetInactivityTimer() {
+		inactivityTimer.shutdownNow(); // Ferma il timer attuale
+		startInactivityTimer(); // Riavvia il timer
+	}
 }

@@ -75,6 +75,12 @@ public class Main extends Application {
 			e.printStackTrace();
 		}
 
+		primaryStage.setOnCloseRequest(event -> {
+			System.out.println("Chiusura della finestra..."); // Messaggio di debug
+			if (server != null) {
+				server.closeConnections(); // Chiudi le connessioni
+			}
+		});
 	}
 	//Scala la scena in base alle dimensioni della finestra
 	public static void scene_scaling(Scene scene, final Pane root) {
