@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox id="scelta" fx:id="scelta" alignment="CENTER" styleClass="main-container" stylesheets="@application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.SceltaController">
+<VBox id="scelta" fx:id="scelta" alignment="CENTER" styleClass="main-container" stylesheets="@application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.DendrogramController">
    <Button fx:id="backhomeiButton" minHeight="5.0" minWidth="13.0" onAction="#handleBackHome" prefHeight="21.0" prefWidth="71.0" styleClass="button-back" stylesheets="@application.css" text="Home">
       <VBox.margin>
          <Insets right="480.0" />

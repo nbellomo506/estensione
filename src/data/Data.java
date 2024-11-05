@@ -24,7 +24,7 @@ public class Data {
 				db.initConnection();
 				conn = db.getConnection();
 			} catch (DatabaseConnectionException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			} 
             

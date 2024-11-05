@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox id="scelta" fx:id="scelta" alignment="CENTER" styleClass="main-container" stylesheets="@application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.DendrogramController">
+   <Button fx:id="backhomeiButton" minHeight="5.0" minWidth="13.0" onAction="#handleBackHome" prefHeight="21.0" prefWidth="71.0" styleClass="button-back" stylesheets="@application.css" text="Home">
+      <VBox.margin>
+         <Insets right="480.0" />
+      </VBox.margin>
+   </Button>
+   
+    <TableView fx:id="dendrogramTable" styleClass="dendrogram-table" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="dendrogramColumn" minWidth="0.0" prefWidth="549.0" text="Dendrogram" />
+        </columns>
+    </TableView>
+    
+    <!-- Componenti per File -->
+    <VBox fx:id="fileComponents" spacing="10" styleClass="input-container">
+        <HBox alignment="CENTER" spacing="10">
+            <Button fx:id="loadFileButton" onAction="#handleLoadFile" styleClass="action-button" text="Browse Files" />
+            <Button fx:id="createButton" onAction="#handleCreate" styleClass="action-button" text="Create File" />
+        </HBox>
+    </VBox>
+    
+    <!-- Componenti per Database -->
+    <VBox fx:id="dbComponents" spacing="10" styleClass="input-container">
+        <HBox alignment="CENTER" spacing="10">
+            <TextField fx:id="depthInput" prefWidth="100" promptText="Profondità" styleClass="input-field" stylesheets="@application.css" />
+            <ComboBox fx:id="distanceType" promptText="Tipo distanza" styleClass="combo-box" />
+            <Button fx:id="executeButton" onAction="#handleExecute" styleClass="action-button" text="Execute" />
+        </HBox>
+        <HBox alignment="CENTER" spacing="10">
+            <Button fx:id="saveButton" onAction="#handleSave" styleClass="action-button" text="Save" />
+            <Button fx:id="runButton" onAction="#handleRun" styleClass="action-button" text="Run File" />
+        </HBox>
+    </VBox>
+    
+    <padding>
+        <Insets bottom="10" left="10" right="10" top="10" />
+    </padding>
+</VBox>

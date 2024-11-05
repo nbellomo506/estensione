@@ -21,7 +21,7 @@ import javafx.scene.layout.Priority;
  *  classe che gestisce la scena 1.
  *
  */
-public class InfoController {
+public class IntroductionController {
 
 	/**
 	 * Attributo utilizzato per l'interfaccia grafica di FXML.

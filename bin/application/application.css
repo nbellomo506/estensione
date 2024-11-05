@@ -101,7 +101,18 @@
     -fx-scale-x: 1.05;
     -fx-scale-y: 1.05;
 }
-
+.button-back{
+    -fx-background-color: #098f8d;
+    -fx-text-fill: white;
+    -fx-min-width: 20;
+    -fx-min-height: 30;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    
+    -fx-background-radius: 25;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 8, 0, 0, 2);
+    -fx-cursor: hand;
+}
 .action-button:pressed {
     -fx-background-color: #1da8a6;
     -fx-scale-x: 0.95;

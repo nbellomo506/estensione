@@ -18,7 +18,7 @@ import java.util.Arrays;
 import javafx.stage.FileChooser;
 import java.io.File;
 
-public class SceltaController {
+public class DendrogramController {
     @FXML
     private Button backhomeiButton;
     @FXML

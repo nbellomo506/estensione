@@ -21,7 +21,7 @@ import javafx.scene.Parent;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.Priority;
 
-public class OptionsController implements Initializable {
+public class MiningOptionsController implements Initializable {
 
 	@FXML
 	private TextField tableNameInput; // For inputting the table name
@@ -101,10 +101,10 @@ public class OptionsController implements Initializable {
             }
 
             // Se arriviamo qui, la tabella esiste e possiamo procedere
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("scelta.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("Dendrogram.fxml"));
             Parent root = loader.load();
             
-            SceltaController sceltaController = loader.getController();
+            DendrogramController sceltaController = loader.getController();
             sceltaController.setStreams(out, in);
             
             // Modifica qui: passa il testo esatto che ci aspettiamo

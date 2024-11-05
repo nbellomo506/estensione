@@ -18,7 +18,7 @@ import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 
-public class HomeController {
+public class ConnectionController {
 
     @FXML
     private Button connetti;
@@ -45,10 +45,10 @@ public class HomeController {
             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
             
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("Options.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("MiningOptions.fxml"));
             VBox root = loader.load();
 
-            OptionsController optionsController = loader.getController();
+            MiningOptionsController optionsController = loader.getController();
             optionsController.setStreams(out, in);
 
             Scene scene = new Scene(root, 600, 400);
