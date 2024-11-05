@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.Connection;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.EOFException;
 
 import database.DatabaseConnectionException;
 import database.DbAccess;
@@ -119,7 +120,7 @@ public class ServerOneClient extends Thread {
 							try {
 								data = new Data(tabella);
 							} catch (NoDataException e) {
-								// TODO Auto-generated catch block
+								
 								risposta = "Errore. La tabella indicata è vuota";
 							}
                             try {
@@ -194,16 +195,23 @@ public class ServerOneClient extends Thread {
                     out.writeObject(message);
                 }
             }
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+        } catch (EOFException e) {
+            System.err.println("Connessione chiusa inaspettatamente dal client.");
+        } catch (IOException e) {
+            System.err.println("Errore di I/O: " + e.getMessage());
+        } catch (ClassNotFoundException e) {
+            System.err.println("Classe non trovata: " + e.getMessage());
         } finally {
+            // Assicurati di chiudere le risorse
             try {
                 socket.close();
                 in.close();
                 out.close();
                 db.closeConnection();
-            } catch (IOException | SQLException e) {
-                e.printStackTrace();
+            } catch (IOException e) {
+                System.err.println("Errore durante la chiusura del socket: " + e.getMessage());
+            } catch (SQLException e) {
+                System.err.println("Errore durante la chiusura della connessione al database: " + e.getMessage());
             }
         }
     }
