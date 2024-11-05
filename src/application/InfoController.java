@@ -53,6 +53,7 @@ public class InfoController {
     	stage.setScene(scene);
     	stage.setResizable(true);
     	stage.show();
+        Main.scene_scaling(scene, root);
     	VBox.setVgrow(root, Priority.ALWAYS);
     }
 }

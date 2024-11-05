@@ -51,7 +51,7 @@ public class HomeController {
             OptionsController optionsController = loader.getController();
             optionsController.setStreams(out, in);
 
-            Scene scene = new Scene(root, 600, 400);
+            Scene scene = new Scene(root);
             
             Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             stage.setScene(scene);

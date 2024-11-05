@@ -12,6 +12,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.control.Alert;
@@ -112,6 +113,8 @@ public class OptionsController implements Initializable {
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
+            Main.scene_scaling(scene, (Pane) root);
+
 
         } catch (IOException | ClassNotFoundException e) {
             showAlert("Errore", "Errore di comunicazione con il server: " + e.getMessage());
