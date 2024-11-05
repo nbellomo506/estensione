@@ -20,6 +20,8 @@ import java.io.File;
 
 public class SceltaController {
     @FXML
+    private Button backhomeiButton;
+    @FXML
     private TableView<String> dendrogramTable;
     @FXML
     private TableColumn<String, String> dendrogramColumn;
@@ -123,7 +125,10 @@ public class SceltaController {
            
         }
     }
-    
+    @FXML
+    void handleBackHome(ActionEvent event) throws IOException {
+        Main.Gohome(event); // Torna alla scena Home
+    }
     @FXML
     private void handleLoadFile() {
         try {

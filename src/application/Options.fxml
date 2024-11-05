@@ -11,6 +11,11 @@
 <?import javafx.scene.text.Text?>
 
 <VBox id="opzioni" fx:id="opzioni" alignment="CENTER" prefHeight="400.0" prefWidth="600.0" spacing="20" styleClass="main-container" stylesheets="@application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.OptionsController">
+   <Button fx:id="backhomeiButton" minHeight="5.0" minWidth="13.0" onAction="#handleBackHome" prefHeight="21.0" prefWidth="71.0" styleClass="button-back" stylesheets="@application.css" text="Home">
+      <VBox.margin>
+         <Insets right="480.0" />
+      </VBox.margin>
+   </Button>
     
     <!-- Header -->
     <StackPane VBox.vgrow="NEVER">

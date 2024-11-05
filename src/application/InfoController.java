@@ -46,14 +46,6 @@ public class InfoController {
      */
     @FXML
     void GoScena2(ActionEvent event) throws IOException {
-    	VBox root = (VBox)FXMLLoader.load(getClass().getResource("Home.fxml"));
-    	stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-    	scene = new Scene(root);
-		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-    	stage.setScene(scene);
-    	stage.setResizable(true);
-    	stage.show();
-        Main.scene_scaling(scene, root);
-    	VBox.setVgrow(root, Priority.ALWAYS);
+    Main.Gohome(event);
     }
 }

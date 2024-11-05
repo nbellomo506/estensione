@@ -56,7 +56,7 @@ public class HomeController {
             Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             stage.setScene(scene);
             stage.show();
-            Main.scene_scaling(scene, root);
+            //Main.scene_scaling(scene, root);
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Errore di Connessione");

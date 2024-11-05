@@ -31,7 +31,8 @@ public class OptionsController implements Initializable {
 
     @FXML
     private RadioButton scelta2; // Option to load dendrogram from database
-
+    @FXML
+    private Button backhomeiButton;
     @FXML
     private ToggleGroup optionsGroup;
     
@@ -66,7 +67,10 @@ public class OptionsController implements Initializable {
         this.in = in;
     }
     
-   
+    @FXML
+    void handleBackHome(ActionEvent event) throws IOException {
+        Main.Gohome(event); // Torna alla scena Home
+    }
     
     @FXML
     public void handleAvantiButton(ActionEvent event) throws IOException {
