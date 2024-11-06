@@ -28,7 +28,7 @@ public class MultiServer {
 	private List<Socket> activeSockets = new ArrayList<>();
 
 	private ScheduledExecutorService inactivityTimer;
-	private static final int INACTIVITY_TIMEOUT = 30; // Timeout di inattività in secondi
+	private static final int INACTIVITY_TIMEOUT = 60; // Timeout di inattività in secondi
 
 	/**
 	 * costruttore della classe MultiServer.
@@ -116,4 +116,10 @@ public class MultiServer {
 		inactivityTimer.shutdownNow(); // Ferma il timer attuale
 		startInactivityTimer(); // Riavvia il timer
 	}
+
+    public void stop() {
+        closeConnections(); // Chiudi tutte le connessioni attive
+        System.out.println("Server fermato."); // Messaggio di conferma
+        System.exit(0); // Termina l'applicazione
+    }
 }

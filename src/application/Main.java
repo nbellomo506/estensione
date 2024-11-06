@@ -36,6 +36,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import server.MultiServer;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.WritableImage;
+import javafx.scene.image.ImageView;
+import javafx.scene.SnapshotParameters;
+import java.io.File;
+import javax.imageio.ImageIO;
 
 public class Main extends Application {
 	private static MultiServer server;
@@ -45,6 +51,9 @@ public class Main extends Application {
 	 *
 	 */
 	static Scene scene;
+	private double lastWidth = 600; // Larghezza predefinita
+	private double lastHeight = 400; // Altezza predefinita
+
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		// Avvia il server in un thread separato
@@ -58,17 +67,24 @@ public class Main extends Application {
 			primaryStage.setTitle("H-CLUS APPLICATION");
 			Image icon = new Image("Logo.png");
 			primaryStage.getIcons().add(icon);
-			primaryStage.setMinWidth(600);
-			primaryStage.setMinHeight(400);
+			primaryStage.setMinWidth(lastWidth);
+			primaryStage.setMinHeight(lastHeight);
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("Introduction.fxml"));
 
 			VBox root = (VBox) loader.load();
-			root.setMinWidth(600);
-			root.setMinHeight(400);
 			Scene scene = new Scene(root);
 			scene.getStylesheets().add(Main.class.getResource("application.css").toExternalForm());
 			
 			primaryStage.setScene(scene);
+ 			 // Gestisci il cambiamento di scena
+ 			primaryStage.widthProperty().addListener((obs, oldVal, newVal) -> lastWidth = newVal.doubleValue());
+ 			primaryStage.heightProperty().addListener((obs, oldVal, newVal) -> lastHeight = newVal.doubleValue());
+
+			primaryStage.setWidth(lastWidth);
+			primaryStage.setHeight(lastHeight);
+			primaryStage.setResizable(true);
+
+
 			primaryStage.show();
 			scene_scaling(scene, root);
 		} catch (Exception e) {
@@ -78,8 +94,9 @@ public class Main extends Application {
 		primaryStage.setOnCloseRequest(event -> {
 			System.out.println("Chiusura della finestra..."); // Messaggio di debug
 			if (server != null) {
-				server.closeConnections(); // Chiudi le connessioni
+				server.stop(); // Ferma il server e chiudi le connessioni
 			}
+			System.exit(0); // Termina l'applicazione
 		});
 	}
 	//Scala la scena in base alle dimensioni della finestra
@@ -161,4 +178,7 @@ public class Main extends Application {
 	public static void main(String[] args) {
 		launch(args);
 	}
+
+	
+	
 }

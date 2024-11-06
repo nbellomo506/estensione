@@ -17,6 +17,8 @@ import javafx.beans.property.SimpleStringProperty;
 import java.util.Arrays;
 import javafx.stage.FileChooser;
 import java.io.File;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DendrogramController {
     @FXML
@@ -56,6 +58,8 @@ public class DendrogramController {
     private ObjectOutputStream out;
     private ObjectInputStream in;
     private File lastUsedDirectory;
+    
+    private static final Logger logger = Logger.getLogger(DendrogramController.class.getName());
     
     @FXML
     public void initialize() {
@@ -193,24 +197,7 @@ public class DendrogramController {
         }
     }
 
-    @FXML
-    private void handleReload() {
-        // Rimuovi il controllo su fileNameInput
-        // if (fileNameInput.getText().isEmpty()) {
-        //     showAlert("Errore", "Nessun file precedentemente caricato");
-        //     return;
-        // }
-
-        // Non è più necessario gestire il fileNameInput
-        // File currentFile = new File(fileNameInput.getText());
-        // if (!currentFile.exists()) {
-        //     showAlert("Errore", "Il file non esiste più");
-        //     return;
-        // }
-
-        // Puoi chiamare direttamente il metodo per caricare il file
-        // Se hai un modo alternativo per ottenere il file, implementalo qui
-    }
+  
     @FXML
     private void handleCreate() {
         setSelectedOption("Database");
@@ -224,30 +211,22 @@ public class DendrogramController {
     @FXML
     private void handleExecute() {
         try {
+            logger.info("Inizio dell'esecuzione del comando.");
+
             // Invia esplicitamente la scelta 2
             out.writeObject(2);
             out.flush();
             
             // Validazione input
-            if (depthInput.getText().trim().isEmpty()) {
-                showAlert("Errore", "Inserire la profondità");
-                return;
-            }
-            if (distanceType.getValue() == null) {
-                showAlert("Errore", "Selezionare il tipo di distanza");
-                return;
+            if (!validateInputs()) {
+                logger.warning("Validazione degli input fallita.");
+                return; // Se la validazione fallisce, esci dal metodo
             }
 
             // Invia profondità
-            int depth;
-            try {
-                depth = Integer.parseInt(depthInput.getText().trim());
-                out.writeObject(depth);
-                out.flush();
-            } catch (NumberFormatException e) {
-                showAlert("Errore", "La profondità deve essere un numero intero");
-                return;
-            }
+            int depth = Integer.parseInt(depthInput.getText().trim());
+            out.writeObject(depth);
+            out.flush();
 
             // Invia tipo distanza (1 per Single Link, 2 per Average Link)
             int dType = distanceType.getValue().equals("Single Link") ? 1 : 2;
@@ -266,15 +245,24 @@ public class DendrogramController {
                 // Abilita il pulsante di salvataggio
                 saveButton.setDisable(false);
                 runButton.setDisable(false);
+                logger.info("Comando eseguito con successo.");
             } else {
+                logger.severe("Errore ricevuto dal server: " + risposta);
                 showAlert("Errore", risposta);
                 // Disabilita il salvataggio in caso di errore
                 saveButton.setDisable(true);
                 runButton.setDisable(true);
             }
 
-        } catch (IOException | ClassNotFoundException e) {
+        } catch (IOException e) {
+            logger.log(Level.SEVERE, "Errore di comunicazione con il server.", e);
             showAlert("Errore", "Errore di comunicazione con il server: " + e.getMessage());
+        } catch (ClassNotFoundException e) {
+            logger.log(Level.SEVERE, "Errore di deserializzazione.", e);
+            showAlert("Errore", "Errore di deserializzazione: " + e.getMessage());
+        } catch (NumberFormatException e) {
+            logger.log(Level.SEVERE, "Errore di formato numero.", e);
+            showAlert("Errore", "La profondità deve essere un numero intero.");
         }
     }
 
@@ -341,5 +329,28 @@ public class DendrogramController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    // Aggiungi il metodo validateInputs
+    private boolean validateInputs() {
+        // Controlla se depthInput è vuoto
+        if (depthInput.getText().trim().isEmpty()) {
+            showAlert("Errore di validazione", "Il campo profondità non può essere vuoto.");
+            return false;
+        }
+        
+        // Controlla se depthInput è un numero intero positivo
+        try {
+            int depth = Integer.parseInt(depthInput.getText().trim());
+            if (depth <= 0) {
+                showAlert("Errore di validazione", "La profondità deve essere un numero intero positivo.");
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            showAlert("Errore di validazione", "La profondità deve essere un numero intero.");
+            return false;
+        }
+        
+        return true; // Validazione riuscita
     }
 }

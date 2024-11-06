@@ -5,42 +5,36 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
-<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox id="opzioni" fx:id="opzioni" alignment="CENTER" prefHeight="400.0" prefWidth="600.0" spacing="20" styleClass="main-container" stylesheets="@application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MiningOptionsController">
-   <Button fx:id="backhomeiButton" minHeight="5.0" minWidth="13.0" onAction="#handleBackHome" prefHeight="21.0" prefWidth="71.0" styleClass="button-back" stylesheets="@application.css" text="Home">
-      <VBox.margin>
-         <Insets right="480.0" />
-      </VBox.margin>
-   </Button>
+<VBox id="opzioni" fx:id="opzioni" alignment="CENTER" maxHeight="1080.0" maxWidth="1920.0" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" spacing="20" styleClass="main-container" stylesheets="@application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MiningOptionsController">
+    
+    <Button fx:id="backhomeiButton" minHeight="5.0" minWidth="13.0" onAction="#handleBackHome" prefHeight="21.0" prefWidth="71.0" styleClass="button-back" text="Home">
+        <VBox.margin>
+            <Insets right="430.0" />
+        </VBox.margin>
+    </Button>
     
     <!-- Header -->
-    <StackPane VBox.vgrow="NEVER">
-        <padding>
-            <Insets bottom="20.0" top="30.0" />
-        </padding>
-        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Opzioni" textAlignment="CENTER">
-            <font>
-                <Font size="24.0" />
-            </font>
-        </Text>
-    </StackPane>
+    <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Opzioni" textAlignment="CENTER">
+        <font>
+            <Font size="24.0" />
+        </font>
+    </Text>
     
-    <!-- Main Content -->
-    <VBox alignment="CENTER" spacing="20" styleClass="content-container" VBox.vgrow="ALWAYS">
+    <VBox alignment="CENTER" spacing="20" VBox.vgrow="ALWAYS">
         <padding>
             <Insets left="20.0" right="20.0" />
         </padding>
         
         <!-- Nome tabella label e input -->
         <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Nome tabella:" />
-        <TextField fx:id="tableNameInput" maxWidth="300" promptText="inserisci tabella" />
+        <TextField fx:id="tableNameInput" maxWidth="300" promptText="Inserisci il nome della tabella" VBox.vgrow="ALWAYS" />
         
         <!-- Radio buttons -->
-        <VBox fx:id="sceltaInput" alignment="CENTER" spacing="10">
+        <VBox fx:id="sceltaInput" alignment="CENTER" spacing="10" VBox.vgrow="ALWAYS">
             <RadioButton fx:id="scelta1" text="Carica dendrogramma" textFill="WHITE">
                 <toggleGroup>
                     <ToggleGroup fx:id="optionsGroup" />
@@ -51,11 +45,9 @@
     </VBox>
     
     <!-- Bottom Button -->
-    <StackPane VBox.vgrow="NEVER">
-        <padding>
-            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-        </padding>
-        <Button fx:id="avantiButton" onAction="#handleAvantiButton" styleClass="action-button" text="Next" />
-    </StackPane>
+    <Button fx:id="avantiButton" onAction="#handleAvantiButton" styleClass="action-button" text="Next" VBox.vgrow="NEVER" />
     
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
 </VBox>
