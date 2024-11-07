@@ -11,7 +11,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
@@ -29,19 +28,28 @@ public class ConnectionController {
     @FXML 
     private TextField portInput;
     static Parent root;
-    private ObjectOutputStream out;
-    private ObjectInputStream in;
-    public void setStreams(ObjectOutputStream out, ObjectInputStream in) {
-        this.out = out;
-        this.in = in;
-    }
+
+    Socket socket;
+    
     @FXML
     private void connetti(ActionEvent event) throws IOException {
         String ip = hostNameInput.getText();
-        int port = Integer.parseInt(portInput.getText());
+        int port = 0;
+        try {
+        	port = Integer.parseInt(portInput.getText());
+        }catch (NumberFormatException ne){
+        	port = 0;
+        }
+       
         
         try {
-            Socket socket = new Socket(ip, port);
+        	if (ip.isBlank() || ip.isEmpty())
+            	throw new Exception("Nome dell'host non valido\n");
+        	
+        	if(port == 0)
+        		throw new Exception("Numero della porta non valido\n");
+        	
+            socket = new Socket(ip, port);
             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
             
