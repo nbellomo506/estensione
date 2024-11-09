@@ -10,7 +10,7 @@ import database.*;
 public class Data {
    
 	private List<Example> data = new ArrayList<>(); // rappresenta il dataset
-    private int numberOfExamples; // rappresenta il numero di esempi nel dataset
+    private final int numberOfExamples; // rappresenta il numero di esempi nel dataset
 
     // Nuovo costruttore che legge i dati dal database
     public Data(String tableName) throws NoDataException {
@@ -73,25 +73,7 @@ public class Data {
         }
         return e;
     }
-    
-    public double[][] distance() {
-        double[][] distances = new double[numberOfExamples][numberOfExamples];
-        
-        for (int i = 0; i < numberOfExamples; i++) {
-            for (int j = 0; j < i; j++) {
-                distances[i][j] = 0.0;
-            }
-            for (int j = i + 1; j < numberOfExamples; j++) {
-                try {
-                    distances[i][j] = getExample(i).distance(getExample(j));
-                } catch (InvalidSizeException e) {
-                    distances[i][j] = 0;
-                }
-            }
-        }
-        return distances;
-    }
-    
+
     @Override
     public String toString() {
         Iterator<Example> itr = data.iterator();

@@ -7,7 +7,6 @@ import java.io.ObjectOutputStream;
 import java.io.FileNotFoundException;
 import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.Connection;
 import java.io.File;
@@ -24,16 +23,14 @@ import clustering.InvalidDepthException;
 import distance.*;
 
 /** ServerOneClient
- * 
  * Classe che mette in comunicazione il server con il client.
- *
  */
 public class ServerOneClient extends Thread {
 
-    private Socket socket; // Socket per la comunicazione con il client
-    private ObjectInputStream in; // Stream per ricevere oggetti dal client
-    private ObjectOutputStream out; // Stream per inviare oggetti al client
-    private DbAccess db; // Accesso al database
+    private final Socket socket; // Socket per la comunicazione con il client
+    private final ObjectInputStream in; // Stream per ricevere oggetti dal client
+    private final ObjectOutputStream out; // Stream per inviare oggetti al client
+    private final DbAccess db; // Accesso al database
 	private String tabella;
 
     public ServerOneClient(Socket s) throws IOException {
@@ -57,8 +54,8 @@ public class ServerOneClient extends Thread {
     @Override
     public void run() {
         try {
-            while (true) {
-                // Leggi il tipo di operazione
+            while (!socket.isClosed()) {
+                  // Leggi il tipo di operazione
                 Object input = in.readObject();
                 
                 // Se l'input è un intero, è una scelta operazione
@@ -96,6 +93,7 @@ public class ServerOneClient extends Thread {
                                 out.writeObject(risposta);
                                 if (risposta.equals("OK") && dendrogrammaFile != null) {
                                     out.writeObject(dendrogrammaFile);
+
                                 }
                             }
                             break;
@@ -125,8 +123,10 @@ public class ServerOneClient extends Thread {
 							}
                             try {
                                 // Creazione di un'istanza di HierachicalClusterMiner con profondità
-                                minerDB = new HierachicalClusterMiner(depth); 
-                                minerDB.mine(data,distance); // Apprende il dendrogramma
+                                minerDB = new HierachicalClusterMiner(depth);
+                                if (data != null) {
+                                    minerDB.mine(data,distance); // Apprende il dendrogramma
+                                }
                                 dendrogramma = minerDB.toString();
                             }
                           
@@ -143,7 +143,7 @@ public class ServerOneClient extends Thread {
                                 out.writeObject(risposta);
                             }
                             
-                            if(risposta != "OK")
+                            if(!risposta.equals("OK"))
                             	break;
                          
              
@@ -167,7 +167,7 @@ public class ServerOneClient extends Thread {
                             	rispostaSalvataggio = e.getMessage();
                             }
                             finally {
-                                if (rispostaSalvataggio != "OK")
+                                if (!rispostaSalvataggio.equals("OK"))
                                 	rispostaSalvataggio = "Operazione annullata:\n" + rispostaSalvataggio;
                                 out.writeObject(rispostaSalvataggio);
                             }
@@ -197,6 +197,7 @@ public class ServerOneClient extends Thread {
             }
         } catch (EOFException e) {
             System.err.println("Connessione chiusa inaspettatamente dal client.");
+
         } catch (IOException e) {
             System.err.println("Errore di I/O: " + e.getMessage());
         } catch (ClassNotFoundException e) {
